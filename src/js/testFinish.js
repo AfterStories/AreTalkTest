@@ -8,11 +8,12 @@ $(document).ready(function(){
 
 
 $("#Sum").text(GetQueryString("Sum"));
+var Right = GetQueryString("Right");
+$("#Right").text(Right);
 
-$("#Right").text(GetQueryString("Right"));
+$("#score").text(Number(Right)*10);
 
-console.log(GetQueryString("Sum"));
-console.log(GetQueryString("Right"));
+
 
 // 在全局范围内创建主动画控制器与子动画控制器
 	var myAC = new animateControl("FinishPage_ani_");	// 创建对象的时候，可以指定动画元素名称的前缀字符，省略时默认为【ani_】

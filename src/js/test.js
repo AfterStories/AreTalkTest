@@ -1,10 +1,7 @@
-var UserToken = GetQueryString("token");
+var UserToken = GetQueryString("userToken");
 
 
-/*var AjaxURL = 'http://192.168.1.226:8188/AreTalkServer/Web/Api/getRandQuestion.action;token='+UserToken
-*/
-
-
+var AjaxURL = 'http://192.168.1.226:8188/AreTalkServer/Web/Api/getRandQuestion.action?userToken=611608f2782e4avc9a329add1184a33a'
 
 
 var mySwiper
@@ -13,23 +10,15 @@ var Sum
 
 function GetQueryString(name)
 {
-     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-     var r = window.location.search.substr(1).match(reg);
-     if(r!=null)return  unescape(r[2]); return null;
+  var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+  var r = window.location.search.substr(1).match(reg);
+  if(r!=null)return  unescape(r[2]); return null;
 } 
  
 
 
 $(document).ready(function(){
 
-                $.ajax({
-                    type: "GET",
-                    url: "http://192.168.1.226:8188/AreTalkServer/Web/Login/login.action?userName=zzsmf&password=c4ff6ffa298b7c88d81740cffbbf4230&userType=1",
-                    data: {},
-                    success: function (data) {                       
-                
-
-var AjaxURL = 'http://192.168.1.226:8188/AreTalkServer/Web/Api/getRandQuestion.action;jsessionid='+data.data.JSESSIONID;
 
   $.ajax({
     type: "GET",
@@ -38,9 +27,9 @@ var AjaxURL = 'http://192.168.1.226:8188/AreTalkServer/Web/Api/getRandQuestion.a
     success: function (data) {                        
           for (var i = 0; i < data.data.questionList.length; i++) {
                 Sum = data.data.questionList.length;
-                var NewQuestion = '<div class="swiper-slide stop-swiping"><div class="testBox" id="testBox'+i+'"><div class="title">'+data.data.questionList[i].title+'</div> <div class="testMain"><div class="TestContent">'+data.data.questionList[i].questionDescribe+' </div>          </div> </div></div>'
+                var NewQuestion = '<div class="swiper-slide stop-swiping"><div class="testBox" id="testBox'+i+'"><div class="title">'+data.data.questionList[i].title+'</div> <div class="testMain" id="testMain'+i+'"><div class="TestContent">'+data.data.questionList[i].questionDescribe+' </div>          </div> </div></div>'
 
-                   $(".swiper-wrapper").append(NewQuestion);
+                $(".swiper-wrapper").append(NewQuestion);
 
 
 
@@ -48,12 +37,12 @@ var AjaxURL = 'http://192.168.1.226:8188/AreTalkServer/Web/Api/getRandQuestion.a
                 //4 如果有题目音频的话  加入到testMain
                 var AudioTemp = '<img src="src/img/audioICON.png" class="audioICON" ><audio class="testaudio"><source src="http://192.168.1.226:8188'+data.data.questionList[i].mp3Url+'" type="audio/mpeg"></audio>'
                   
-                $(".testMain").append(AudioTemp);
+                $("#testMain"+i).append(AudioTemp);
 
           }else if(data.data.questionList[i].imgUrl){
                 //4 如果有题目图片的话 加入到testMain
                 var ImgTemp = '<img src=http://192.168.1.226:8188'+data.data.questionList[i].mp3Url+' class="testImg">'
-                $(".testMain").append(ImgTemp);
+                $("#testMain"+i).append(ImgTemp);
 
           }     
                             
@@ -104,16 +93,6 @@ StarSwiper();
    });
 
 
-
-
-    
-                        },
-                    error: function (a,b,c) {
-                           alert("登陆超时，请重试");
-                         }
-                    });
-
-
 })//ready结束
 
 
@@ -124,11 +103,6 @@ StarSwiper();
 
 
 function StarSwiper(){
-
-
-
-
-
 
 
   mySwiper = new Swiper('.swiper-container', {
@@ -174,7 +148,7 @@ $('.submitBtn').click(function(){
 
 
  if(ChooseAnswer == TrueAnswer){
-      alert("答对啦~")
+      /*alert("答对啦~")*/
       Right = Right+1;
       $(".answer").removeClass('ChooseThis');
         if (mySwiper.isEnd) {
@@ -185,7 +159,7 @@ $('.submitBtn').click(function(){
                  $('.testaudio')[0].pause(); 
                   mySwiper.slideNext();//滑动到下一个          
             }else{
-               mySwiper.slideNext();//滑动到下一个
+                  mySwiper.slideNext();//滑动到下一个
             }
             
            
@@ -195,7 +169,7 @@ $('.submitBtn').click(function(){
 
  }else{
 
-      alert("答错啦~正确答案是"+TrueAnswer.toUpperCase())
+/*      alert("答错啦~正确答案是"+TrueAnswer.toUpperCase())*/
       $(".answer").removeClass('ChooseThis');
         if (mySwiper.isEnd) {
           window.location.href = "testfinish.html?Right="+Right+"&Sum="+Sum;
